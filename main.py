@@ -24,6 +24,7 @@ def main():
         
         screen.fill("black")
         player.draw(screen)
+        player.update(delta)
         pygame.display.flip()
 
         clock.tick(refresh_rate)
