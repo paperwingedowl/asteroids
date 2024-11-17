@@ -22,10 +22,10 @@ def main():
             if event.type == pygame.QUIT: # checks to see if you closed the window, then exits
                 return
         
+        screen.fill("black")
         player.draw(screen)
-
-        screen.fill(1)
         pygame.display.flip()
+
         clock.tick(refresh_rate)
         delta = clock.tick(refresh_rate) / 1000
 
