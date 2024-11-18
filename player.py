@@ -1,12 +1,16 @@
-from main import *
-from circleshape import *
+import pygame
+from circleshape import CircleShape
 from constants import *
+from shot import Shot
 
 class Player(CircleShape):
 
     def __init__(self, x, y):
         super().__init__(x, y, PLAYER_RADIUS)
+        self.x = x
+        self.y = y
         self.rotation = 0
+        self.shot_timer = 0
     
     def triangle(self):
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
@@ -23,6 +27,9 @@ class Player(CircleShape):
         self.rotation += PLAYER_TURN_SPEED * delta
 
     def update(self, delta):
+
+        self.shot_timer -= delta
+
         keys = pygame.key.get_pressed()
 
         if keys[pygame.K_a]:
@@ -33,7 +40,33 @@ class Player(CircleShape):
             self.move(delta)
         if keys[pygame.K_s]:
             self.move(-delta)
+        if keys[pygame.K_SPACE]:
+            try:
+                self.shoot()
+            except Exception as e:
+                pass
+
+        if abs(self.velocity.x) > PLAYER_MAX_SPEED:
+            if self.velocity.x < 0:
+                self.velocity.x = -PLAYER_MAX_SPEED
+            elif self.velocity.x >= 0:
+                self.velocity.x = PLAYER_MAX_SPEED
+        if abs(self.velocity.y) > PLAYER_MAX_SPEED:
+            if self.velocity.y < 0:
+                self.velocity.y = -PLAYER_MAX_SPEED
+            elif self.velocity.y >= 0:
+                self.velocity.y = PLAYER_MAX_SPEED
+            
+        self.position += self.velocity * delta
     
     def move(self, delta):
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
-        self.position += forward * PLAYER_SPEED * delta
+        self.velocity += forward * PLAYER_SPEED * delta
+        print(self.velocity)
+
+    def shoot(self):
+        if self.shot_timer > 0:
+            raise Exception("Gun is still on cooldown...")
+        self.shot_timer = PLAYER_SHOOT_COOLDOWN
+        shot = Shot(self.position.x, self.position.y, SHOT_RADIUS)
+        shot.velocity = pygame.Vector2(0, 1).rotate(self.rotation) * PLAYER_SHOOT_SPEED
