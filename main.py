@@ -1,7 +1,7 @@
 import pygame
-from player import *
-from circleshape import *
 from constants import *
+from circleshape import *
+from player import *
 
 def main():
     print("Starting asteroids!")
