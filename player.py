@@ -61,8 +61,11 @@ class Player(CircleShape):
     
     def move(self, delta):
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
-        self.velocity += forward * PLAYER_SPEED * delta
+        self.velocity += forward * PLAYER_ACCELERATION * delta
         print(self.velocity)
+
+    def strafe(self, delta):
+        pass
 
     def shoot(self):
         if self.shot_timer > 0:
