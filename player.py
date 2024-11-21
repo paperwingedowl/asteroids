@@ -71,5 +71,6 @@ class Player(CircleShape):
         if self.shot_timer > 0:
             raise Exception("Gun is still on cooldown...")
         self.shot_timer = PLAYER_SHOOT_COOLDOWN
-        shot = Shot(self.position.x, self.position.y, SHOT_RADIUS)
+        shot = Shot(self.position.x, self.position.y)
         shot.velocity = pygame.Vector2(0, 1).rotate(self.rotation) * PLAYER_SHOOT_SPEED
+        self.velocity += pygame.Vector2(0, 1).rotate(self.rotation) * -25
